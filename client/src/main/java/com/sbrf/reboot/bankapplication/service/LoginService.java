@@ -21,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 public class LoginService implements ILoginService {
-    private final KafkaTemplate<String, Object> kafkaTemplate;
     private final RestTemplate restTemplate;
     private final HttpHeaders httpHeaders;
     private final ObjectMapper objectMapper;
@@ -31,18 +30,10 @@ public class LoginService implements ILoginService {
     @Value("${spring.requestUrl.signUp}")
     private String signUpRequestUrl;
 
-    @Value("${spring.topic.signUp}")
-    private String signUpTopic;
-
     private final String signInUsernameField = "username";
     private final String signInPasswordField = "password";
 
-    public LoginService(
-            final KafkaTemplate<String, Object> kafkaTemplate,
-            final RestTemplate restTemplate,
-            final HttpHeaders httpHeaders
-    ) {
-        this.kafkaTemplate = kafkaTemplate;
+    public LoginService(final RestTemplate restTemplate, final HttpHeaders httpHeaders) {
         this.restTemplate = restTemplate;
         this.httpHeaders = httpHeaders;
         objectMapper = new ObjectMapper();
@@ -59,10 +50,10 @@ public class LoginService implements ILoginService {
         final var jsonObject = new JSONObject();
         jsonObject.put(signInUsernameField, signUpRequest.getUsername());
         jsonObject.put(signInPasswordField, signUpRequest.getPassword());
-        final HttpEntity<String> request = new HttpEntity<>(jsonObject.toString(), httpHeaders);
+        final HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), httpHeaders);
         return restTemplate.postForObject(
                 signUpRequestUrl,
-                request,
+                entity,
                 String.class
         );
     }
@@ -79,10 +70,10 @@ public class LoginService implements ILoginService {
         final var jsonObject = new JSONObject();
         jsonObject.put(signInUsernameField, signInRequest.getUsername());
         jsonObject.put(signInPasswordField, signInRequest.getPassword());
-        final HttpEntity<String> request = new HttpEntity<>(jsonObject.toString(), httpHeaders);
+        final HttpEntity<String> entity = new HttpEntity<>(jsonObject.toString(), httpHeaders);
         final String response = restTemplate.postForObject(
                 signInRequestUrl,
-                request,
+                entity,
                 String.class
         );
         return objectMapper.readTree(response);
