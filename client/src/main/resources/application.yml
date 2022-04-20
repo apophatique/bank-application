@@ -10,9 +10,10 @@ spring:
     signIn: http://localhost:8081/signin
     signUp: http://localhost:8081/signup
     getBalance: http://localhost:8081/balance
+    increaseBalance: http://localhost:8081/balance/increase
+    decreaseBalance: http://localhost:8081/balance/decrease
 
   topic:
-    signUp: signUpTopic
     increaseBalance: increaseBalanceTopic
     decreaseBalance: decreaseBalanceTopic
 
