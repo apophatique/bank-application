@@ -17,42 +17,24 @@ public class BalanceController {
         this.balanceService = balanceService;
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Long> getBalance(@PathVariable final String id) {
-
-        System.out.printf("GET BALANCE SERVER %S%n", id);
-
+    @GetMapping
+    public ResponseEntity<Long> getBalance() {
         return ResponseEntity
                 .ok()
-                .body(balanceService.getBalance(Integer.valueOf(id)));
+                .body(balanceService.getBalance());
     }
 
-    @PutMapping("/{id}/increase")
-    @KafkaListener(
-            id = "increaseBalanceId",
-            topics = "increaseBalanceTopic"
-    )
-    public ResponseEntity<Long> increaseBalance(
-            @PathVariable final Integer id,
-            @RequestParam final Long valueForUpdated
-    ) {
-        System.out.println(id + " " + valueForUpdated);
+    @PutMapping("/increase")
+    public ResponseEntity<Long> increaseBalance(@RequestParam final Long value) {
         return ResponseEntity
                 .ok()
-                .body(balanceService.increaseBalance(id, valueForUpdated));
+                .body(balanceService.increaseBalance(value));
     }
 
-    @PutMapping("/{id}/decrease")
-    @KafkaListener(
-            id = "decreaseBalanceId",
-            topics = "decreaseBalanceTopic"
-    )
-    public ResponseEntity<Long> decreaseBalance(
-            @PathVariable final Integer id,
-            @RequestParam final Long valueForUpdated
-    ) {
+    @PutMapping("/decrease")
+    public ResponseEntity<Long> decreaseBalance(@RequestParam final Long value) {
         return ResponseEntity
                 .ok()
-                .body(balanceService.decreaseBalance(id, valueForUpdated));
+                .body(balanceService.decreaseBalance(value));
     }
 }

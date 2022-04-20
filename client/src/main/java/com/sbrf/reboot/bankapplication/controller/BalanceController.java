@@ -1,14 +1,10 @@
 package com.sbrf.reboot.bankapplication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.sbrf.reboot.bankapplication.service.IBalanceService;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
-import model.SignInResponse;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
@@ -22,30 +18,22 @@ public class BalanceController {
         this.balanceService = balanceService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Long> getBalance(@PathVariable final String id) throws JsonProcessingException, URISyntaxException {
-        return ResponseEntity
-                .ok()
-                .body(balanceService.getBalance(Integer.valueOf(id)));
+    @GetMapping
+    public ResponseEntity<Long> getBalance()  {
+        return ResponseEntity.ok().body(balanceService.getBalance());
     }
 
-    @PutMapping("/{id}/increase")
-    public ResponseEntity<Long> increaseBalance(
-            @PathVariable final Integer id,
-            @RequestParam final Long valueForUpdated
-    ) {
+    @PutMapping("/increase")
+    public ResponseEntity<JsonNode> increaseBalance(@RequestParam final Long value) throws JsonProcessingException {
         return ResponseEntity
-                .ok()
-                .body(balanceService.increaseBalance(id, valueForUpdated));
+                .status(HttpStatus.OK)
+                .body(balanceService.increaseBalance(value));
     }
 
-    @PutMapping("/{id}/decrease")
-    public ResponseEntity<Long> decreaseBalance(
-            @PathVariable final Integer id,
-            @RequestParam final Long valueForUpdated
-    ) {
+    @PutMapping("/decrease")
+    public ResponseEntity<JsonNode> decreaseBalance(@RequestParam final Long value) throws JsonProcessingException {
         return ResponseEntity
-                .ok()
-                .body(balanceService.decreaseBalance(id, valueForUpdated));
+                .status(HttpStatus.OK)
+                .body(balanceService.decreaseBalance(value));
     }
 }
