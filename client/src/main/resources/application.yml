@@ -1,0 +1,20 @@
+spring:
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer:  org.springframework.kafka.support.serializer.JsonSerializer
+
+  requestUrl:
+    signIn: http://localhost:8081/signin
+    signUp: http://localhost:8081/signup
+    getBalance: http://localhost:8081/balance
+
+  topic:
+    signUp: signUpTopic
+    increaseBalance: increaseBalanceTopic
+    decreaseBalance: decreaseBalanceTopic
+
+server:
+  port: 8082
