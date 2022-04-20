@@ -24,16 +24,16 @@ public class BalanceController {
     }
 
     @PutMapping("/increase")
-    public ResponseEntity<JsonNode> increaseBalance(@RequestParam final Long value) throws JsonProcessingException {
+    public ResponseEntity<Long> increaseBalance(@RequestParam final Long value) throws JsonProcessingException {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(balanceService.increaseBalance(value));
+                .body(balanceService.modifyBalance(value, "increase"));
     }
 
     @PutMapping("/decrease")
-    public ResponseEntity<JsonNode> decreaseBalance(@RequestParam final Long value) throws JsonProcessingException {
+    public ResponseEntity<Long> decreaseBalance(@RequestParam final Long value) throws JsonProcessingException {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(balanceService.decreaseBalance(value));
+                .body(balanceService.modifyBalance(value, "decrease"));
     }
 }

@@ -26,7 +26,7 @@ public class BalanceService implements IBalanceService {
     }
 
     @Override
-    public Long increaseBalance(Long value) {
+    public Long increaseBalance(final Long value) {
         final User user = whoAmIService.whoami();
 
         final Balance balance = balanceRepository.findByUserId(user.getId());
@@ -37,7 +37,7 @@ public class BalanceService implements IBalanceService {
     }
 
     @Override
-    public Long decreaseBalance(Long value) {
+    public Long decreaseBalance(final Long value) {
         final User user = whoAmIService.whoami();
 
         final Balance balance = balanceRepository.findByUserId(user.getId());

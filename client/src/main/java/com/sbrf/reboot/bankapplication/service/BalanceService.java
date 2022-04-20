@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class BalanceService implements IBalanceService {
@@ -77,7 +78,10 @@ public class BalanceService implements IBalanceService {
     }
 
     @Override
-    public Long increaseBalance(final Long value) {
+    public Long modifyBalance(final Long value, final String type) {
+        final String url = Objects.equals(type, "increase")
+                ? increaseBalanceRequestUrl
+                : decreaseBalanceRequestUrl;
         final HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         httpHeaders.setBearerAuth(
@@ -88,36 +92,7 @@ public class BalanceService implements IBalanceService {
         );
 
         final HttpEntity<String> entity = new HttpEntity<>("parameters", httpHeaders);
-        final String urlTemplate = UriComponentsBuilder.fromHttpUrl(decreaseBalanceRequestUrl)
-                .queryParam("value", "{value}")
-                .encode()
-                .toUriString();
-        final Map<String, Long> params = new HashMap<>() {{
-            put("value", value);
-        }};
-        final ResponseEntity<Long> response = restTemplate.exchange(
-                urlTemplate,
-                HttpMethod.PUT,
-                entity,
-                Long.class,
-                params
-        );
-        return response.getBody();
-    }
-
-    @Override
-    public Long decreaseBalance(final Long value) {
-        final HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-        httpHeaders.setBearerAuth(
-                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                        .getRequest()
-                        .getHeader(AUTHORIZATION_HEADER)
-                        .replace("Bearer ", "")
-        );
-
-        final HttpEntity<String> entity = new HttpEntity<>("parameters", httpHeaders);
-        final String urlTemplate = UriComponentsBuilder.fromHttpUrl(decreaseBalanceRequestUrl)
+        final String urlTemplate = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("value", "{value}")
                 .encode()
                 .toUriString();
