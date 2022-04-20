@@ -1,7 +1,7 @@
 package com.sbrf.reboot.bankapplication.service.security;
 
-import com.sbrf.reboot.bankapplication.entities.User;
 import com.sbrf.reboot.bankapplication.configuration.security.JwtSettings;
+import com.sbrf.reboot.bankapplication.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -28,6 +28,8 @@ public class JwtService implements IJwtService {
                 .setSubject(user.getUsername())
                 .setExpiration(Date.from(now.plus(settings.getTokenExpiredIn())));
 
+        claims.put("userId", user.getId());
+
         return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, settings.getTokenSigningKey())
@@ -40,8 +42,9 @@ public class JwtService implements IJwtService {
                 .setSigningKey(settings.getTokenSigningKey())
                 .parseClaimsJws(token);
 
-        final String subject = claims.getBody().getSubject();
+        final String username = claims.getBody().getSubject();
+        final Object userId = claims.getBody().get("userId");
 
-        return new AuthenticatedJwtToken(subject);
+        return new AuthenticatedJwtToken(username, userId);
     }
 }

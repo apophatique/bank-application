@@ -5,9 +5,10 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 public class AuthenticatedJwtToken extends AbstractAuthenticationToken {
     private final String subject;
 
-    public AuthenticatedJwtToken(final String subject) {
+    public AuthenticatedJwtToken(final String subject, final Object details) {
         super(null);
-        this.subject = subject;
+        this.subject = subject; // username
+        setDetails(details);    // id
         setAuthenticated(true);
     }
 
