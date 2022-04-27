@@ -1,19 +1,15 @@
 package com.sbrf.reboot.bankapplication.controller;
 
-import com.sbrf.reboot.bankapplication.service.IBalanceService;
-import model.SignInResponse;
+import com.sbrf.reboot.bankapplication.service.BalanceService;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/balance")
 public class BalanceController {
-    private final IBalanceService balanceService;
+    private final BalanceService balanceService;
 
-    public BalanceController(final IBalanceService balanceService) {
+    public BalanceController(final BalanceService balanceService) {
         this.balanceService = balanceService;
     }
 
