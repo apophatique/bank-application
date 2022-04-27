@@ -3,7 +3,6 @@ package com.sbrf.reboot.bankapplication.controller;
 import com.sbrf.reboot.bankapplication.entities.User;
 import com.sbrf.reboot.bankapplication.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

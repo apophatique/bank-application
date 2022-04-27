@@ -2,7 +2,7 @@ package com.sbrf.reboot.bankapplication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.sbrf.reboot.bankapplication.service.LoginService;
+import com.sbrf.reboot.bankapplication.service.LoginServiceURLRequest;
 import model.SignInRequest;
 import model.SignUpRequest;
 import org.springframework.http.MediaType;
@@ -20,9 +20,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/client")
 public class LoginController {
-    private final LoginService loginService;
+    private final LoginServiceURLRequest loginService;
 
-    public LoginController(final LoginService loginService) {
+    public LoginController(final LoginServiceURLRequest loginService) {
         this.loginService = loginService;
     }
 

@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class JwtConfig {
-    final String tokenIssuer;
-    final String tokenSigningKey;
-    final int aTokenDuration;
+    private final String tokenIssuer;
+    private final String tokenSigningKey;
+    private final int aTokenDuration;
 
     public JwtConfig(@Value("${jwt.issuer}") final String tokenIssuer,
                      @Value("${jwt.signingKey}") final String tokenSigningKey,

@@ -2,7 +2,7 @@ package com.sbrf.reboot.bankapplication.controller;
 
 import com.sbrf.reboot.bankapplication.exception.LoginFailedException;
 import com.sbrf.reboot.bankapplication.exception.UserAlreadyExistsException;
-import com.sbrf.reboot.bankapplication.service.LoginService;
+import com.sbrf.reboot.bankapplication.service.LoginServiceJpa;
 import com.sbrf.reboot.bankapplication.service.security.IJwtService;
 import model.SignInRequest;
 import model.SignInResponse;
@@ -10,7 +10,6 @@ import model.SignUpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,10 +19,10 @@ import javax.validation.Valid;
  */
 @RestController
 public class LoginController {
-    private final LoginService loginService;
+    private final LoginServiceJpa loginService;
     private final IJwtService jwtService;
 
-    public LoginController(final LoginService loginService, final IJwtService jwtService) {
+    public LoginController(final LoginServiceJpa loginService, final IJwtService jwtService) {
         this.loginService = loginService;
         this.jwtService = jwtService;
     }
@@ -49,7 +48,6 @@ public class LoginController {
 //            id = "signUpId"
 //    )
     public ResponseEntity<Object> signUp(@Valid @RequestBody final SignUpRequest signUpRequest) {
-        System.out.println(signUpRequest);
         loginService.signUp(signUpRequest);
         return ResponseEntity
                 .noContent()
